@@ -1,0 +1,25 @@
+.navigation {
+
+  &__list {
+    display: flex;
+
+  }
+
+  &__item {
+    transition: color .5s;
+
+    & a {
+      @media (max-width: 500px) {
+        font-size: 18px;
+      }
+
+      &:hover {
+        color: darkred;
+      }
+    }
+
+    &:not(:first-child) {
+      margin-left: 20px;
+    }
+  }
+}

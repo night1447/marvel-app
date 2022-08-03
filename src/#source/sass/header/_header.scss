@@ -1,0 +1,17 @@
+@import "navigation";
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  &__main-href{
+    & span {
+      color: darkred;
+
+    }
+    @media (max-width: 500px) {
+      font-size: 18px;
+      max-width: 150px;
+    }
+  }
+}
