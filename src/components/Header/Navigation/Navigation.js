@@ -1,13 +1,14 @@
 import NavigationList from "./NavigationList";
+import {routesNames} from "../../AppRouter/routes";
 
 const infoItems = [
     {
         text: 'Character',
-        link: '#'
+        link: routesNames.HOME,
     },
     {
         text: 'Comics',
-        link: '#'
+        link: routesNames.COMICS
     },
 ]
 const Navigation = (props) => {

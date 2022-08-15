@@ -3,7 +3,7 @@ import Characters from "./Characters/Characters";
 import CharacterInfo from "./CharacterInfo/CharacterInfo";
 import {useState} from "react";
 
-const Character = (props) => {
+const Character = () => {
     const [selectedId, setSelectedId] = useState(null);
     const changeSelectedItemHandler = (id) => {
         setSelectedId(prevState => {
@@ -13,9 +13,9 @@ const Character = (props) => {
                 return id;
             }
         )
+        document.getElementById(`${id}`).classList.add('character__item-selected');
+
     }
-
-
     return <div className={'character'}>
         <Wrapper class={'character__wrapper'}>
             <Characters onChangeSelectedItem={changeSelectedItemHandler}/>

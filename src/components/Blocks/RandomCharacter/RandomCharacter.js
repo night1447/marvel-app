@@ -1,55 +1,36 @@
 import RandomCharacterBlock from "./RandomCharacterBlock";
 import RandomCharacterStatic from "./RandomCharacterStatic";
-import {useEffect, useReducer, useState} from "react";
-import MarvelService from "../../../services/MarvelService";
+import {useEffect, useState} from "react";
 import Spinner from "../../UI/Spinner/Spinner";
 import Error from "../../UI/Error/Error";
-
-const marvelService = new MarvelService();
-
-const characterReducer = (state, action) => {
-    if (action.type === 'UPDATE_CHARACTER') {
-        return {
-                name: action.characterInfo.name,
-                description: action.characterInfo.description,
-                id: action.characterInfo.id,
-                thumbnail: action.characterInfo.thumbnail,
-                homepage: action.characterInfo.homepage,
-                wiki: action.characterInfo.wiki,
-                imageNotFoundIndex: action.characterInfo.imageNotFoundIndex,
-        }
-    }
-};
+import useMarvelService from "../../../services/MarvelService";
 
 
-const RandomCharacter = (props) => {
-    const [character, dispatchCharacter] = useReducer(characterReducer, {
-    });
-    const [hasError, setHasError] = useState(false);
-    const [hasLoading, setHasLoading] = useState(true);
+const RandomCharacter = () => {
+    const [character, setCharacter] = useState({}
+    );
+    const {hasError, hasLoading, getCharacterById, clearError} = useMarvelService();
+
     const loadRandomCharacter = () => {
-        setHasLoading(true);
-        setHasError(false);
-
+        clearError();
         const id = Math.floor(Math.random() * (400) + 1011000);
-        marvelService
-            .getCharacterById(id)
+        getCharacterById(id)
             .then(character => {
-                setHasError(false);
-                setHasLoading(false);
-                dispatchCharacter(
-                    {
-                        type: 'UPDATE_CHARACTER',
-                        characterInfo: character,
-                    });
+                clearError();
+                setCharacter(character);
             })
-            .catch(error => setHasError(true));
-
-
     }
     useEffect(() => {
         loadRandomCharacter();
     }, []);
+    useEffect(()=> {
+        const interval = setInterval(() => {
+            loadRandomCharacter()
+        }, 15000);
+        return () => {
+            clearInterval(interval);
+        }
+    },[character])
 
     const getRandomCharacterBlock = () => {
         if (hasError) {
