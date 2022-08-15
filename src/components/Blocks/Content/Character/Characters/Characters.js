@@ -1,61 +1,61 @@
-import {Fragment, useEffect, useState} from "react";
-import MarvelService from "../../../../../services/MarvelService";
+import {Fragment, useCallback, useEffect, useReducer, useState} from "react";
 import Spinner from "../../../../UI/Spinner/Spinner";
 import Error from "../../../../UI/Error/Error";
+import useMarvelService from "../../../../../services/MarvelService";
 
-const marvelService = new MarvelService();
-
+const charactersInfoReducer = (state, action) => {
+    return {
+        characters: state.characters.concat(action.items),
+        offset: state.offset + 9,
+    };
+}
 const Characters = (props) => {
-    const [characters, setCharacters] = useState([]);
-    const [hasLoading, setHasLoading] = useState(true);
     const [hasItemLoading, setHasItemLoading] = useState(false);
     const [charactersEnded, setCharactersEnded] = useState(false);
-    const [hasError, setHasError] = useState(false);
-    const [offset, setOffset] = useState(210);
+    const {hasLoading, hasError, getAllCharacters, clearError} = useMarvelService();
+    const [charactersInfo, dispatchCharactersInfo] = useReducer(charactersInfoReducer, {
+        characters: [],
+        offset: 210,
+    });
 
-    const onRequest = (offset) => {
-        marvelService.getAllCharacters(offset).then(items => {
-            if (items.length === 0) {
-                setCharactersEnded(true);
-                return;
-            }
-            setHasError(false);
-            setHasItemLoading(false);
-            setHasLoading(false);
-            setCharacters(prevState => [...prevState, ...items])
-        }).catch(error => {
-            setHasError(true);
-        })
-    }
+    const onRequest = useCallback((offset) => {
+            getAllCharacters(offset).then(items => {
+                clearError();
+                if (items.length === 0) {
+                    setCharactersEnded(true);
+                    return;
+                }
+                setHasItemLoading(false);
+                dispatchCharactersInfo({items: items})
+            })
+        }
+        , [getAllCharacters]);
+
     useEffect(() => {
-        setOffset(prevState => prevState + Math.floor(Math.random() * 101))
         onRequest();
     }, []);
-
     const selectCharacterHandler = (event) => {
         if (event.target.closest('.character__item')) {
             const id = event.target.closest('.character__item').id;
             props.onChangeSelectedItem(id);
-            document.getElementById(`${id}`).classList.add('character__item-selected');
         }
     };
 
-    const loadMoreCharactersHandler = () => {
-        setOffset(prevState => prevState + 9)
+    const loadMoreCharactersHandler = useCallback(() => {
         setHasItemLoading(true);
-        onRequest(offset);
-    };
+        onRequest(charactersInfo.offset);
+    }, [charactersInfo.offset])
     const getContent = () => {
         if (hasError) {
             return <Error/>;
         }
-        if (hasLoading) {
+        if (!hasItemLoading && hasLoading) {
             return <Spinner/>
-        }
-        return <Fragment>
+
+        } else return <Fragment>
             <ul className={'character__list'} onClick={selectCharacterHandler}>
-                {characters.map(character => <li className={`${'character__item'}`} id={character.id}
-                                                 key={character.id}>
+                {charactersInfo.characters.map(character => <li className={`${'character__item'}`} id={character.id}
+                                                                key={character.id}>
                     <img src={character.thumbnail} alt={character.name} className={'character__image'}/>
                     <p className={'character__name'}>
                         {character.name}
@@ -68,9 +68,8 @@ const Characters = (props) => {
                     onClick={loadMoreCharactersHandler}>
                 <div className={'inner'}>Load more</div>
             </button>
-
-        </Fragment>
-    }
+        </Fragment>;
+    };
 
     return (
         getContent()

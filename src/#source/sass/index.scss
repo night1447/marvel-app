@@ -5,23 +5,31 @@ $grey: #5C5C5C;
 @import "header/header";
 @import "main/main";
 @import "main/character";
-*{
+@import "comics";
+* {
   font-size: 24px;
-  font-family: 'Segoe UI',serif;
+  font-family: 'Segoe UI', serif;
 }
-.container{
+
+.container {
   max-width: 1100px;
   margin: 0 auto;
   @media (max-width: 1105px) {
     max-width: 90%;
   }
 }
-#app{
+
+#app {
   padding: 50px 0 25px 0;
   width: 100%;
 
 }
-a{
+
+a {
   color: black;
   display: inline-block;
+}
+
+nav .active{
+  color: #9f0013;
 }
