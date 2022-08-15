@@ -98,10 +98,6 @@
   background-color: transparent;
   cursor: pointer;
 
-  &:disabled {
-    filter: grayscale(.3);
-  }
-
   &__long {
     display: block;
     width: 170px;

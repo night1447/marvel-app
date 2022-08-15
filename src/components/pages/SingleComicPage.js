@@ -19,7 +19,7 @@ const SingleComicPage = () => {
             });
         };
         loadComic();
-    }, [comicId, getComicById]);
+    }, [comicId]);
 
     const pageBackHandler = () => {
         navigation(-1);

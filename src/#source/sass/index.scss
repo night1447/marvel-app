@@ -30,6 +30,11 @@ a {
   display: inline-block;
 }
 
-nav .active{
+nav .active {
   color: #9f0013;
+}
+
+button:disabled {
+  filter: grayscale(.3);
+
 }
