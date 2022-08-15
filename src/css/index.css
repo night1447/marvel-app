@@ -199,9 +199,6 @@ h1, h2, h3, h4, h5, h6 {
   background-color: transparent;
   cursor: pointer;
 }
-.button:disabled {
-  filter: grayscale(0.3);
-}
 .button__long {
   display: block;
   width: 170px;
@@ -469,15 +466,34 @@ main {
   }
 }
 .single-comic {
-  margin-top: 50px;
   display: grid;
-  grid-template-columns: 293px 550px auto;
-  column-gap: 50px;
+  margin-top: 50px;
+  grid-template-columns: 1.5fr 2.5fr auto;
+  gap: 25px;
   align-items: start;
 }
+@media (max-width: 950px) {
+  .single-comic {
+    grid-template-columns: 1fr 1.5fr;
+    gap: 25px;
+  }
+}
+@media (max-width: 700px) {
+  .single-comic {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
 .single-comic__img {
-  width: 293px;
+  width: 100%;
   height: 450px;
+}
+@media (max-width: 700px) {
+  .single-comic__img {
+    width: 80%;
+    align-self: center;
+  }
 }
 .single-comic__name {
   font-weight: bold;
@@ -510,11 +526,36 @@ main {
 .single-comic__back:hover {
   color: #9F0013;
 }
+@media (max-width: 950px) {
+  .single-comic__back {
+    justify-self: center;
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+}
 
 .comics__list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 30px;
+}
+@media (max-width: 1000px) {
+  .comics__list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 861px) {
+  .comics__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 510px) {
+  .comics__list {
+    grid-template-columns: 1fr;
+  }
+}
+.comics__item a {
+  width: 100%;
 }
 .comics__banner {
   display: flex;
@@ -526,6 +567,11 @@ main {
   padding: 10px 0;
   border-radius: 10px;
   margin-bottom: 60px;
+}
+@media (max-width: 768px) {
+  .comics__banner {
+    flex-direction: column;
+  }
 }
 .comics__banner-text {
   font-weight: 700;
@@ -584,6 +630,10 @@ a {
 
 nav .active {
   color: #9f0013;
+}
+
+button:disabled {
+  filter: grayscale(0.3);
 }
 
 /*# sourceMappingURL=index.css.map */

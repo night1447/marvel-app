@@ -26,7 +26,7 @@ const useMarvelService = () => {
         return {
             id: comic.id,
             name: comic.title,
-            price: `$${comic.prices[0].price}`||'Not available',
+            price: comic.prices[0].price?`$${comic.prices[0].price}` : 'Not available',
             thumbnail: `${comic.thumbnail.path}.${comic.thumbnail.extension}`,
             countPages: comic.pageCount,
             description: comic.description || 'Description is missing',

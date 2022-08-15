@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 
-const ComicsItem = (props) => {
+const ComicItem = (props) => {
     return (
         <li className={'comics__item'} key={props.comic.id}>
             <Link to={`/comics/${props.comic.id}`}>
@@ -12,4 +12,4 @@ const ComicsItem = (props) => {
         </li>
     )
 }
-export default ComicsItem;
+export default ComicItem;

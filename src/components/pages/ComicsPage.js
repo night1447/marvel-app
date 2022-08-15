@@ -9,7 +9,7 @@ import avengersLogo from '../../resourses/img/Avengers_logo.png'
 const comicsInfoReducer = (state, action) => {
     return {
         comics: state.comics.concat(action.comics),
-        offset: state.offset + 8,
+        offset: state.offset + 32,
     };
 }
 const ComicsPage = () => {
@@ -35,13 +35,13 @@ const ComicsPage = () => {
     }, [clearError, getComics]);
     useEffect(() => {
         onRequest();
-    }, [onRequest]);
+    }, []);
 
     const loadMoreComicsHandler = () => {
         setHasItemLoading(true);
         onRequest(comicsInfo.offset);
     }
-    const View = () => {
+    const View = useCallback(() => {
         if (hasError) {
             return <Error/>;
         }
@@ -60,7 +60,7 @@ const ComicsPage = () => {
                 </button>
             </Fragment>);
 
-    }
+    }, [comicsInfo.comics, hasItemLoading]);
     return (
         <section className={'comics'}>
             <div className={'comics__banner'}>
